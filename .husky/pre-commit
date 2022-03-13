@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn tsc
+yarn check-types
+yarn check-format
+yarn check-lint
+yarn format
