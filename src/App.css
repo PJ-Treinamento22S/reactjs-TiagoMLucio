@@ -1,38 +1,53 @@
+:root {
+    /* Colors */
+    --primaryDark: #2e6f95;
+    --primary: #017997;
+    --primaryLight: #aec5da;
+    --secondary: #b7094c;
+    --white: #edf6f9;
+    --gray: #4c6b82;
+
+    /* Shadow */
+    --light: 0px 4px 4px rgba(0, 0, 0, 0.25), 4px 4px 4px rgba(0, 0, 0, 0.25),
+        4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .App {
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--white);
+
+    font-family: "Nunito";
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    color: var(--white);
+    font-weight: 800;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+input,
+button {
+    background-color: transparent;
+    border: 0px solid;
+    outline: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+textarea {
+    background-color: transparent;
+    border: none;
+    resize: none;
+    overflow: hidden;
+    outline: 0;
 }
