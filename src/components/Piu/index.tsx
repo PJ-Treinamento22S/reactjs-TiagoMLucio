@@ -4,7 +4,10 @@ import PiuInterface from "../../interfaces/Piu";
 import Profile from "../../assets/Profile.svg";
 import Like from "../../assets/Likes.svg";
 import Bookmark from "../../assets/BookmarkMsg.svg";
+import RedLike from "../../assets/RedLikes.svg";
+import RedBookmark from "../../assets/RedBookmarkMsg.svg";
 import Share from "../../assets/Share.svg";
+import { myUser } from "../Wrapper";
 
 function getCreatedTime(time: Date) {
     const diff = new Date().getTime() - new Date(time).getTime();
@@ -41,7 +44,15 @@ function getCreatedTime(time: Date) {
     } ago`;
 }
 
-const Piu: React.FC<PiuInterface> = ({ user, likes, text, created_at }) => {
+const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
+    const handleLike = () => {
+        return;
+    };
+
+    const handleFavorite = () => {
+        return;
+    };
+
     return (
         <S.Wrapper>
             <S.User>
@@ -57,10 +68,27 @@ const Piu: React.FC<PiuInterface> = ({ user, likes, text, created_at }) => {
                 <S.CreatedTime>{getCreatedTime(created_at)}</S.CreatedTime>
                 <S.Reactions>
                     <S.LikeData>
-                        <S.ReactionIcon src={Like} />
+                        <S.ReactionIcon
+                            src={
+                                likes.find(
+                                    like =>
+                                        like.user.username === "xX_felipinho_Xx"
+                                )
+                                    ? RedLike
+                                    : Like
+                            }
+                            onClick={handleLike}
+                        />
                         <S.Amount>{likes.length}</S.Amount>
                     </S.LikeData>
-                    <S.ReactionIcon src={Bookmark} />
+                    <S.ReactionIcon
+                        src={
+                            myUser.favorites.find(piu => piu.id === id)
+                                ? RedBookmark
+                                : Bookmark
+                        }
+                        onClick={handleFavorite}
+                    />
                     <S.ReactionIcon src={Share} />
                 </S.Reactions>
             </S.PiuBox>

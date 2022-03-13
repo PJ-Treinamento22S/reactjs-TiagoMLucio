@@ -15,6 +15,10 @@ import Filter1To9 from "../../assets/1-_9.svg";
 import Filter9To1 from "../../assets/1_-9.svg";
 import api from "../../config/api";
 
+export let myUser: UserInterface;
+
+// export const UserContext = createContext({});
+
 const Wrapper: React.FC = () => {
     const [pius, setPius] = useState<PiuInterface[]>([]);
     const [users, setUsers] = useState<UserInterface[]>([]);
@@ -27,6 +31,11 @@ const Wrapper: React.FC = () => {
         async function getUsers() {
             const users = await api.get("/users");
             setUsers(users.data);
+            myUser = users.data.find(
+                (user: { username: string }) =>
+                    user.username === "xX_felipinho_Xx"
+            );
+            console.log(myUser);
         }
         getPius();
         getUsers();
@@ -51,15 +60,7 @@ const Wrapper: React.FC = () => {
                 <S.Warning></S.Warning>
                 <S.Pius>
                     {pius.map(piu => (
-                        <Piu
-                            key={piu.id}
-                            id={piu.id}
-                            user={piu.user}
-                            likes={piu.likes}
-                            text={piu.text}
-                            created_at={piu.created_at}
-                            updated_at={piu.updated_at}
-                        />
+                        <Piu key={piu.id} {...piu} />
                     ))}
                 </S.Pius>
             </S.Middle>
@@ -67,21 +68,7 @@ const Wrapper: React.FC = () => {
                 <S.SectionTitle>Usuários</S.SectionTitle>
                 <S.UserList>
                     {users.map(user => (
-                        <UserCard
-                            key={user.id}
-                            id={user.id}
-                            username={user.username}
-                            first_name={user.first_name}
-                            last_name={user.last_name}
-                            email={user.email}
-                            about={user.about}
-                            photo={user.photo}
-                            pius={user.pius}
-                            likes={user.likes}
-                            following={user.following}
-                            followers={user.followers}
-                            favorites={user.favorites}
-                        />
+                        <UserCard key={user.id} {...user} />
                     ))}
                 </S.UserList>
             </S.Right>

@@ -4,10 +4,14 @@ import Divisor from "../../assets/Divisor.svg";
 import Img from "../../assets/Img.svg";
 import GIF from "../../assets/GIF.svg";
 import Emoji from "../../assets/Emoji.svg";
+import api from "../../config/api";
 
 const CreatePiu: React.FC = () => {
-    const [characterCount, setCharacterCount] = useState(0);
-
+    const [text, setText] = useState("");
+    const handlePost = async () => {
+        await api.post("/pius", { text });
+        window.location.reload();
+    };
     return (
         <S.Container>
             <S.CreateTitle>Criar um Piu</S.CreateTitle>
@@ -16,13 +20,12 @@ const CreatePiu: React.FC = () => {
                     wrap="hard"
                     placeholder="Texto"
                     onChange={e => {
-                        setCharacterCount(e.target.value.length);
+                        setText(e.target.value);
                     }}
-                >
-                </S.CreatePiuText>
+                ></S.CreatePiuText>
                 <S.TextInfo>
-                    <S.CharacterCount characterCount={characterCount}>
-                        {characterCount + "/140"}
+                    <S.CharacterCount characterCount={text.length}>
+                        {text.length + "/140"}
                     </S.CharacterCount>
                     <S.Divisor src={Divisor} />
                     <S.WrapperBottom>
@@ -31,9 +34,7 @@ const CreatePiu: React.FC = () => {
                             <S.Icon src={GIF}></S.Icon>
                             <S.Icon src={Emoji}></S.Icon>
                         </S.Icons>
-                        <S.Post>
-                            Postar
-                        </S.Post>
+                        <S.Post onClick={handlePost}>Postar</S.Post>
                     </S.WrapperBottom>
                 </S.TextInfo>
             </S.TextBox>

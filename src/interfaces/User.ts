@@ -1,5 +1,5 @@
-import Piu from './Piu'
-import PiuLike from './PiuLike';
+import Piu from "./Piu";
+import PiuLike from "./PiuLike";
 
 export default interface User {
     id: string;

@@ -1,4 +1,4 @@
-import getApi from "./axios"
+import getApi from "./axios";
 
 const api = getApi();
 
