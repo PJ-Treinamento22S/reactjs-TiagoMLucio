@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Button from "../Button/index";
 import CreatePiu from "../CreatePiu";
 import Piu from "../Piu";
 import UserCard from "../UserCard";
-import PiuInterface from "../../interfaces/Piu";
-import UserInterface from "../../interfaces/User";
+import { useAuth } from "../../hooks/useAuth";
 
 import * as S from "./styles";
 
@@ -14,32 +13,41 @@ import FilterZToA from "../../assets/A_-Z.svg";
 import Filter1To9 from "../../assets/1-_9.svg";
 import Filter9To1 from "../../assets/1_-9.svg";
 import api from "../../config/api";
-
-export let myUser: UserInterface;
-
-// export const UserContext = createContext({});
+import UserInterface from "../../interfaces/User";
 
 const Wrapper: React.FC = () => {
-    const [pius, setPius] = useState<PiuInterface[]>([]);
-    const [users, setUsers] = useState<UserInterface[]>([]);
+    const {
+        pius,
+        users,
+        myUser,
+        setPius,
+        setUsers,
+        setMyUser,
+        reload,
+        setReload,
+    } = useAuth();
 
     useEffect(() => {
-        async function getPius() {
-            const pius = await api.get("/pius");
-            setPius(pius.data);
+        async function getData() {
+            const responsePius = await api.get("/pius");
+            const responseUsers = await api.get("/users");
+            setPius(responsePius.data);
+            setUsers(responseUsers.data);
         }
-        async function getUsers() {
-            const users = await api.get("/users");
-            setUsers(users.data);
-            myUser = users.data.find(
-                (user: { username: string }) =>
-                    user.username === "xX_felipinho_Xx"
-            );
-            console.log(myUser);
-        }
-        getPius();
-        getUsers();
-    }, []);
+        getData();
+        return setReload(false);
+    }, [reload]);
+
+    useEffect(() => {
+        setMyUser(
+            () =>
+                users.find(
+                    user => user.username === "profcarvalho"
+                ) as UserInterface
+        );
+    }, [users]);
+
+    console.log(myUser);
 
     return (
         <S.Content>

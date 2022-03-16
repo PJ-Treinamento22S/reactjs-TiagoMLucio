@@ -33,11 +33,17 @@ export const TextBox = styled.div`
     border-radius: 16px;
 `;
 
-export const CreatePiuText = styled.textarea`
-    color: var(--gray);
+interface CharacterCountProps {
+    characterCount: number;
+}
+
+export const CreatePiuText = styled.textarea<CharacterCountProps>`
+    color: ${props =>
+        props.characterCount <= 140 ? "var(--gray)" : "var(--secondary)"};
     font-family: "Nunito";
     font-size: 16px;
     font-weight: 600;
+    margin-bottom: 4px;
 
     min-width: 344px;
     max-width: 344px;
@@ -54,10 +60,6 @@ export const TextInfo = styled.div`
     flex-direction: column;
     justify-content: flex-start;
 `;
-
-interface CharacterCountProps {
-    characterCount: number;
-}
 
 export const CharacterCount = styled.h3<CharacterCountProps>`
     color: ${props => {
@@ -117,4 +119,16 @@ export const Post = styled.button`
     font-weight: 800;
     font-size: 16px;
     line-height: 33px;
+`;
+
+interface WarningProps {
+    display: boolean;
+}
+
+export const Warning = styled.p<WarningProps>`
+    display: ${props => (props.display ? "block" : "none")};
+    width: 344px;
+    color: var(--secondary);
+    font-size: 12px;
+    text-align: left;
 `;

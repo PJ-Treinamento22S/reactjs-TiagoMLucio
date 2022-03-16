@@ -86,7 +86,6 @@ export const LikeData = styled.div`
     width: 100px;
 `;
 
-
 export const ReactionIcon = styled.img`
     width: 24px;
 

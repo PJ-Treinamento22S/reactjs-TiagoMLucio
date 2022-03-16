@@ -1,4 +1,6 @@
 import React from "react";
+import { useAuth } from "../../hooks/useAuth";
+
 import * as S from "./styles";
 import PiuInterface from "../../interfaces/Piu";
 import Profile from "../../assets/Profile.svg";
@@ -7,7 +9,7 @@ import Bookmark from "../../assets/BookmarkMsg.svg";
 import RedLike from "../../assets/RedLikes.svg";
 import RedBookmark from "../../assets/RedBookmarkMsg.svg";
 import Share from "../../assets/Share.svg";
-import { myUser } from "../Wrapper";
+import api from "../../config/api";
 
 function getCreatedTime(time: Date) {
     const diff = new Date().getTime() - new Date(time).getTime();
@@ -45,12 +47,16 @@ function getCreatedTime(time: Date) {
 }
 
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
-    const handleLike = () => {
-        return;
+    const { myUser } = useAuth();
+
+    const handleLike = async () => {
+        await api.post("/pius/like", { piu_id: id });
     };
 
-    const handleFavorite = () => {
-        return;
+    const handleFavorite = async () => {
+        if (myUser?.favorites.find(piu => piu.id === id))
+            await api.post("/pius/unfavorite", { piu_id: id });
+        else await api.post("/pius/favorite", { piu_id: id });
     };
 
     return (
@@ -72,7 +78,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                             src={
                                 likes.find(
                                     like =>
-                                        like.user.username === "xX_felipinho_Xx"
+                                        like.user.username === "profcarvalho"
                                 )
                                     ? RedLike
                                     : Like
@@ -83,7 +89,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                     </S.LikeData>
                     <S.ReactionIcon
                         src={
-                            myUser.favorites.find(piu => piu.id === id)
+                            myUser?.favorites.find(piu => piu.id === id)
                                 ? RedBookmark
                                 : Bookmark
                         }
