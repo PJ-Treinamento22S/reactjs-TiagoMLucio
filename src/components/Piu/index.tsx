@@ -9,6 +9,8 @@ import Like from "../../assets/Likes.svg";
 import Bookmark from "../../assets/BookmarkMsg.svg";
 import RedLike from "../../assets/RedLikes.svg";
 import RedBookmark from "../../assets/RedBookmarkMsg.svg";
+import Msg from "../../assets/Msg.svg";
+import Trash from "../../assets/Trash.svg";
 import Share from "../../assets/Share.svg";
 import api from "../../config/api";
 
@@ -59,7 +61,8 @@ export const wasSearched = (user: UserInterface, search: string) =>
         .includes(search);
 
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
-    const { myUsername, myUser, setMyUser, favorites, search } = useAuth();
+    const { myUsername, myUser, setMyUser, favorites, search, setReload } =
+        useAuth();
 
     const handleLike = async () => {
         await api.post("/pius/like", { piu_id: id });
@@ -73,6 +76,11 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         else await api.post("/pius/favorite", { piu_id: id });
         const myUserNew = await api.get("/users?username=" + myUsername);
         setMyUser(myUserNew.data[0]);
+    };
+
+    const handleDelete = async () => {
+        await api.delete("/pius");
+        setReload(true);
     };
 
     const isFavorite: boolean = myUser?.favorites.find(piu => piu.id === id)
@@ -130,6 +138,12 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                     <S.ReactionIcon
                         src={isFavorite ? RedBookmark : Bookmark}
                         onClick={handleFavorite}
+                    />
+                    <S.ReactionIcon src={Msg} hidden={myUser?.id === user.id} />
+                    <S.ReactionIcon
+                        src={Trash}
+                        onClick={handleDelete}
+                        hidden={myUser?.id !== user.id}
                     />
                     <S.ReactionIcon src={Share} />
                 </S.Reactions>

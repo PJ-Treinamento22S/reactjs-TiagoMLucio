@@ -98,15 +98,11 @@ export const LikeData = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 100px;
+    width: 24px;
 `;
 
 export const ReactionIcon = styled.img`
     width: 24px;
-
-    &:last-child {
-        margin-left: 76px;
-    }
 `;
 
 export const Amount = styled.p`
