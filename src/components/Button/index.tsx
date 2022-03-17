@@ -8,7 +8,12 @@ interface ButtonProps {
     isActive: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ src, type, setFunction, isActive }) => {
+const Button: React.FC<ButtonProps> = ({
+    src,
+    type,
+    setFunction,
+    isActive,
+}) => {
     return (
         <S.Container
             onClick={() => {

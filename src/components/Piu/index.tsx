@@ -51,7 +51,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
 
     const handleLike = async () => {
         await api.post("/pius/like", { piu_id: id });
-        const myUserNew = await api.get("/users?username=profcarvalho");
+        const myUserNew = await api.get("/users?username=BafetimbiGomis");
         setMyUser(myUserNew.data[0]);
     };
 
@@ -59,13 +59,13 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         if (myUser?.favorites.find(piu => piu.id === id))
             await api.post("/pius/unfavorite", { piu_id: id });
         else await api.post("/pius/favorite", { piu_id: id });
-        const myUserNew = await api.get("/users?username=profcarvalho");
+        const myUserNew = await api.get("/users?username=BafetimbiGomis");
         setMyUser(myUserNew.data[0]);
     };
 
-    const isFavorite:boolean = myUser?.favorites.find(
-        piu => piu.id === id
-    ) ? true : false;
+    const isFavorite: boolean = myUser?.favorites.find(piu => piu.id === id)
+        ? true
+        : false;
 
     return (
         <S.Wrapper isFavorite={isFavorite} favorites={favorites}>

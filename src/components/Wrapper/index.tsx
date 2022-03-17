@@ -61,16 +61,24 @@ const Wrapper: React.FC = () => {
 
     useEffect(() => {
         console.log("useEffect");
-        const sorted = pius.sort((a, b) => {
+        const sorted = [...pius].sort((a, b) => {
             switch (filter) {
-                // case "FilterAToZ":
-                //     return a.user.username - b.user.username;
-                // case "FilterZToA":
-                //     return b.user.username - a.user.username;
+                case "FilterAToZ":
+                    return (a.user.username ||
+                        "user_" + a.user.id.slice(0, 5)) >
+                        (b.user.username || "user_" + b.user.id.slice(0, 5))
+                        ? 1
+                        : -1;
+                case "FilterZToA":
+                    return (a.user.username ||
+                        "user_" + a.user.id.slice(0, 5)) <
+                        (b.user.username || "user_" + b.user.id.slice(0, 5))
+                        ? 1
+                        : -1;
                 case "Filter1To9":
                     return a.text.length > b.text.length ? 1 : -1;
                 case "Filter9To1":
-                    return b.text.length > a.text.length ? 1 : -1;
+                    return a.text.length < b.text.length ? 1 : -1;
                 default:
                     return new Date(b.created_at).getTime() >
                         new Date(a.created_at).getTime()
@@ -81,6 +89,8 @@ const Wrapper: React.FC = () => {
         console.log("sorted:", sorted);
         setPiusFiltered(sorted);
     }, [pius, filter]);
+
+    console.log("pius:", pius, "piusFiltered:", piusFiltered);
 
     function changeFilter(filterStr: string) {
         return () =>
@@ -124,8 +134,8 @@ const Wrapper: React.FC = () => {
                         <Button
                             src={Filter9To1}
                             type={"Tamanho"}
-                            setFunction={changeFilter("Filter9to1")}
-                            isActive={filter === "Filter9to1"}
+                            setFunction={changeFilter("Filter9To1")}
+                            isActive={filter === "Filter9To1"}
                         />
                     </S.Buttons>
                 </S.Left>
