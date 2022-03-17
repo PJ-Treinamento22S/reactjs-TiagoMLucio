@@ -18,13 +18,18 @@ import UserInterface from "../../interfaces/User";
 const Wrapper: React.FC = () => {
     const {
         pius,
+        piusFiltered,
         users,
-        myUser,
         setPius,
+        setPiusFiltered,
         setUsers,
         setMyUser,
         reload,
         setReload,
+        setFavorites,
+        favorites,
+        filter,
+        setFilter,
     } = useAuth();
 
     useEffect(() => {
@@ -47,7 +52,42 @@ const Wrapper: React.FC = () => {
         );
     }, [users]);
 
-    console.log(myUser);
+    useEffect(() => {
+        setPiusFiltered(pius);
+        setFilter(filter);
+    }, []);
+
+    // pius.forEach(piu => console.log(piu.text, piu.text.length));
+
+    useEffect(() => {
+        console.log("useEffect");
+        const sorted = pius.sort((a, b) => {
+            switch (filter) {
+                // case "FilterAToZ":
+                //     return a.user.username - b.user.username;
+                // case "FilterZToA":
+                //     return b.user.username - a.user.username;
+                case "Filter1To9":
+                    return a.text.length > b.text.length ? 1 : -1;
+                case "Filter9To1":
+                    return b.text.length > a.text.length ? 1 : -1;
+                default:
+                    return new Date(b.created_at).getTime() >
+                        new Date(a.created_at).getTime()
+                        ? 1
+                        : -1;
+            }
+        });
+        console.log("sorted:", sorted);
+        setPiusFiltered(sorted);
+    }, [pius, filter]);
+
+    function changeFilter(filterStr: string) {
+        return () =>
+            filter === filterStr ? setFilter("") : setFilter(filterStr);
+    }
+
+    console.log(filter);
 
     return (
         <S.Content>
@@ -55,11 +95,38 @@ const Wrapper: React.FC = () => {
                 <S.Left>
                     <S.SectionTitle>Filtros</S.SectionTitle>
                     <S.Buttons>
-                        <Button src={Bookmark} type={"Favoritos"} />
-                        <Button src={FilterAToZ} type={"Username"} />
-                        <Button src={FilterZToA} type={"Username"} />
-                        <Button src={Filter1To9} type={"Tamanho"} />
-                        <Button src={Filter9To1} type={"Tamanho"} />
+                        <Button
+                            src={Bookmark}
+                            type={"Favoritos"}
+                            setFunction={() => {
+                                setFavorites(!favorites);
+                            }}
+                            isActive={favorites}
+                        />
+                        <Button
+                            src={FilterAToZ}
+                            type={"Username"}
+                            setFunction={changeFilter("FilterAToZ")}
+                            isActive={filter === "FilterAToZ"}
+                        />
+                        <Button
+                            src={FilterZToA}
+                            type={"Username"}
+                            setFunction={changeFilter("FilterZToA")}
+                            isActive={filter === "FilterZToA"}
+                        />
+                        <Button
+                            src={Filter1To9}
+                            type={"Tamanho"}
+                            setFunction={changeFilter("Filter1To9")}
+                            isActive={filter === "Filter1To9"}
+                        />
+                        <Button
+                            src={Filter9To1}
+                            type={"Tamanho"}
+                            setFunction={changeFilter("Filter9to1")}
+                            isActive={filter === "Filter9to1"}
+                        />
                     </S.Buttons>
                 </S.Left>
             </S.ExtraLeft>
@@ -67,7 +134,7 @@ const Wrapper: React.FC = () => {
                 <CreatePiu />
                 <S.Warning></S.Warning>
                 <S.Pius>
-                    {pius.map(piu => (
+                    {piusFiltered.map(piu => (
                         <Piu key={piu.id} {...piu} />
                     ))}
                 </S.Pius>

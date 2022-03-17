@@ -47,23 +47,35 @@ function getCreatedTime(time: Date) {
 }
 
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
-    const { myUser } = useAuth();
+    const { myUser, setMyUser, favorites } = useAuth();
 
     const handleLike = async () => {
         await api.post("/pius/like", { piu_id: id });
+        const myUserNew = await api.get("/users?username=profcarvalho");
+        setMyUser(myUserNew.data[0]);
     };
 
     const handleFavorite = async () => {
         if (myUser?.favorites.find(piu => piu.id === id))
             await api.post("/pius/unfavorite", { piu_id: id });
         else await api.post("/pius/favorite", { piu_id: id });
+        const myUserNew = await api.get("/users?username=profcarvalho");
+        setMyUser(myUserNew.data[0]);
     };
 
+    const isFavorite:boolean = myUser?.favorites.find(
+        piu => piu.id === id
+    ) ? true : false;
+
     return (
-        <S.Wrapper>
+        <S.Wrapper isFavorite={isFavorite} favorites={favorites}>
             <S.User>
                 <S.Avatar
-                    src={user.photo.includes("https") ? user.photo : Profile}
+                    src={user.photo}
+                    onError={e => {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (e.target as any).src = Profile;
+                    }}
                 />
                 <S.Username>
                     @{user.username || "user_" + user.id.slice(0, 5)}
@@ -76,23 +88,29 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                     <S.LikeData>
                         <S.ReactionIcon
                             src={
-                                likes.find(
-                                    like =>
-                                        like.user.username === "profcarvalho"
-                                )
+                                myUser?.likes.find(piu => piu.id === id)
                                     ? RedLike
                                     : Like
                             }
                             onClick={handleLike}
                         />
-                        <S.Amount>{likes.length}</S.Amount>
+                        <S.Amount>
+                            {
+                                // likes.length -
+                                //     (likes.find(
+                                //         piuLike => piuLike.user.id === myUser?.id
+                                //     )
+                                //         ? 1
+                                //         : 0) +
+                                //     (myUser?.likes.find(piuLike => piuLike.piu.id === id)
+                                //         ? 1
+                                //         : 0)
+                                0
+                            }
+                        </S.Amount>
                     </S.LikeData>
                     <S.ReactionIcon
-                        src={
-                            myUser?.favorites.find(piu => piu.id === id)
-                                ? RedBookmark
-                                : Bookmark
-                        }
+                        src={isFavorite ? RedBookmark : Bookmark}
                         onClick={handleFavorite}
                     />
                     <S.ReactionIcon src={Share} />

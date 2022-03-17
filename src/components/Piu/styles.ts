@@ -1,6 +1,14 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div``;
+interface WrapperProps {
+    isFavorite: boolean;
+    favorites: boolean;
+}
+
+export const Wrapper = styled.div<WrapperProps>`
+    display: ${props =>
+        props.isFavorite ? "block" : props.favorites ? "none" : "block"};
+`;
 
 export const User = styled.div`
     position: relative;

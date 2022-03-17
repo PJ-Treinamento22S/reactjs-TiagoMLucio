@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface CointainerProps {
+    isActive: boolean;
+}
+
+export const Container = styled.div<CointainerProps>`
     display: flex;
     list-style: none;
     align-items: center;
@@ -12,9 +16,10 @@ export const Container = styled.div`
     font-weight: 600;
 
     border-radius: 12px;
-    padding: 2px 12px 2px 12px;
+    padding: 2px 24px 2px 12px;
     margin-top: 8px;
-    background: var(--primary);
+    background: ${props =>
+        props.isActive ? "var(--secondary)" : "var(--primary)"};
     box-shadow: var(--light);
 
     &:first-child {
@@ -32,4 +37,5 @@ export const FilterImg = styled.img`
 export const FilterType = styled.p`
     width: 100px;
     justify-content: center;
+    text-align: center;
 `;
