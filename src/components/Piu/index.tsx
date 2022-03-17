@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 import * as S from "./styles";
 import PiuInterface from "../../interfaces/Piu";
+import UserInterface from "../../interfaces/User";
 import Profile from "../../assets/Profile.svg";
 import Like from "../../assets/Likes.svg";
 import Bookmark from "../../assets/BookmarkMsg.svg";
@@ -46,6 +47,17 @@ function getCreatedTime(time: Date) {
     } ago`;
 }
 
+export const wasSearched = (user: UserInterface, search: string) =>
+    (user.username || "user_" + user.id.slice(0, 5))
+        .toLowerCase()
+        .includes(search) ||
+    (user.first_name && user.last_name
+        ? user.first_name + " " + user.last_name
+        : "User " + user.id.slice(0, 5)
+    )
+        .toLowerCase()
+        .includes(search);
+
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
     const { myUsername, myUser, setMyUser, favorites, search } = useAuth();
 
@@ -71,11 +83,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         <S.Wrapper
             isFavorite={isFavorite}
             favorites={favorites}
-            search={
-                user.username.toLowerCase().includes(search) ||
-                user.first_name.toLowerCase().includes(search) ||
-                user.last_name.toLowerCase().includes(search)
-            }
+            search={wasSearched(user, search)}
         >
             <S.User>
                 <S.Avatar
@@ -96,7 +104,9 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                     <S.LikeData>
                         <S.ReactionIcon
                             src={
-                                likes.find(piuLike => piuLike.user.id === myUser?.id)
+                                likes.find(
+                                    piuLike => piuLike.user.id === myUser?.id
+                                )
                                     ? RedLike
                                     : Like
                             }

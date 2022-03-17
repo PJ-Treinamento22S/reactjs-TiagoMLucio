@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
-export const Container = styled.li`
-    display: flex;
+interface ContainerProps {
+    search: boolean;
+}
+
+export const Container = styled.li<ContainerProps>`
+    display: ${props => (props.search ? "flex" : "none")};
     align-items: center;
     justify-content: space-between;
     padding: 4px 16px;
