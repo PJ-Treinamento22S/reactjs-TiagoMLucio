@@ -3,11 +3,18 @@ import styled from "styled-components";
 interface WrapperProps {
     isFavorite: boolean;
     favorites: boolean;
+    search: boolean;
 }
 
 export const Wrapper = styled.div<WrapperProps>`
     display: ${props =>
-        props.isFavorite ? "block" : props.favorites ? "none" : "block"};
+        props.search
+            ? props.isFavorite
+                ? "block"
+                : props.favorites
+                ? "none"
+                : "block"
+            : "none"};
 `;
 
 export const User = styled.div`

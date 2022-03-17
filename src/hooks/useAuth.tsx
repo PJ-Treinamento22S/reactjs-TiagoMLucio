@@ -2,6 +2,7 @@ import React, { useState, createContext, useContext } from "react";
 import PiuInterface from "../interfaces/Piu";
 import UserInterface from "../interfaces/User";
 type AuthContextType = {
+    myUsername: string;
     myUser: UserInterface;
     setMyUser: React.Dispatch<React.SetStateAction<UserInterface>>;
     pius: PiuInterface[];
@@ -16,6 +17,8 @@ type AuthContextType = {
     setFavorites: React.Dispatch<React.SetStateAction<boolean>>;
     filter: string;
     setFilter: React.Dispatch<React.SetStateAction<string>>;
+    search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -23,6 +26,8 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const AuthProvider: React.FC = ({ children }) => {
+    const myUsername = "BafetimbiGomis";
+
     const [pius, setPius] = useState<PiuInterface[]>([] as PiuInterface[]);
     const [piusFiltered, setPiusFiltered] = useState<PiuInterface[]>(
         [] as PiuInterface[]
@@ -33,10 +38,12 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const [favorites, setFavorites] = useState(false);
     const [filter, setFilter] = useState("");
+    const [search, setSearch] = useState("");
 
     return (
         <AuthContext.Provider
             value={{
+                myUsername,
                 myUser,
                 pius,
                 piusFiltered,
@@ -51,6 +58,8 @@ export const AuthProvider: React.FC = ({ children }) => {
                 setFavorites,
                 filter,
                 setFilter,
+                search,
+                setSearch,
             }}
         >
             {children}

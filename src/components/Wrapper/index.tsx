@@ -17,6 +17,7 @@ import UserInterface from "../../interfaces/User";
 
 const Wrapper: React.FC = () => {
     const {
+        myUsername,
         pius,
         piusFiltered,
         users,
@@ -31,6 +32,29 @@ const Wrapper: React.FC = () => {
         filter,
         setFilter,
     } = useAuth();
+
+    const filterButtonsInfo = [
+        {
+            src: FilterAToZ,
+            type: "Username",
+            filterType: "FilterAToZ",
+        },
+        {
+            src: FilterZToA,
+            type: "Username",
+            filterType: "FilterZToA",
+        },
+        {
+            src: Filter1To9,
+            type: "Tamanho",
+            filterType: "Filter1To9",
+        },
+        {
+            src: Filter9To1,
+            type: "Tamanho",
+            filterType: "Filter9To1",
+        },
+    ];
 
     useEffect(() => {
         async function getData() {
@@ -47,7 +71,7 @@ const Wrapper: React.FC = () => {
         setMyUser(
             () =>
                 users.find(
-                    user => user.username === "profcarvalho"
+                    user => user.username === myUsername
                 ) as UserInterface
         );
     }, [users]);
@@ -57,47 +81,40 @@ const Wrapper: React.FC = () => {
         setFilter(filter);
     }, []);
 
-    // pius.forEach(piu => console.log(piu.text, piu.text.length));
-
     useEffect(() => {
-        console.log("useEffect");
-        const sorted = [...pius].sort((a, b) => {
-            switch (filter) {
-                case "FilterAToZ":
-                    return (a.user.username ||
-                        "user_" + a.user.id.slice(0, 5)) >
-                        (b.user.username || "user_" + b.user.id.slice(0, 5))
-                        ? 1
-                        : -1;
-                case "FilterZToA":
-                    return (a.user.username ||
-                        "user_" + a.user.id.slice(0, 5)) <
-                        (b.user.username || "user_" + b.user.id.slice(0, 5))
-                        ? 1
-                        : -1;
-                case "Filter1To9":
-                    return a.text.length > b.text.length ? 1 : -1;
-                case "Filter9To1":
-                    return a.text.length < b.text.length ? 1 : -1;
-                default:
-                    return new Date(b.created_at).getTime() >
-                        new Date(a.created_at).getTime()
-                        ? 1
-                        : -1;
-            }
-        });
-        console.log("sorted:", sorted);
-        setPiusFiltered(sorted);
+        setPiusFiltered(
+            [...pius].sort((a, b) => {
+                switch (filter) {
+                    case "FilterAToZ":
+                        return (a.user.username ||
+                            "user_" + a.user.id.slice(0, 5)) >
+                            (b.user.username || "user_" + b.user.id.slice(0, 5))
+                            ? 1
+                            : -1;
+                    case "FilterZToA":
+                        return (a.user.username ||
+                            "user_" + a.user.id.slice(0, 5)) <
+                            (b.user.username || "user_" + b.user.id.slice(0, 5))
+                            ? 1
+                            : -1;
+                    case "Filter1To9":
+                        return a.text.length > b.text.length ? 1 : -1;
+                    case "Filter9To1":
+                        return a.text.length < b.text.length ? 1 : -1;
+                    default:
+                        return new Date(b.created_at).getTime() >
+                            new Date(a.created_at).getTime()
+                            ? 1
+                            : -1;
+                }
+            })
+        );
     }, [pius, filter]);
-
-    console.log("pius:", pius, "piusFiltered:", piusFiltered);
 
     function changeFilter(filterStr: string) {
         return () =>
             filter === filterStr ? setFilter("") : setFilter(filterStr);
     }
-
-    console.log(filter);
 
     return (
         <S.Content>
@@ -113,30 +130,18 @@ const Wrapper: React.FC = () => {
                             }}
                             isActive={favorites}
                         />
-                        <Button
-                            src={FilterAToZ}
-                            type={"Username"}
-                            setFunction={changeFilter("FilterAToZ")}
-                            isActive={filter === "FilterAToZ"}
-                        />
-                        <Button
-                            src={FilterZToA}
-                            type={"Username"}
-                            setFunction={changeFilter("FilterZToA")}
-                            isActive={filter === "FilterZToA"}
-                        />
-                        <Button
-                            src={Filter1To9}
-                            type={"Tamanho"}
-                            setFunction={changeFilter("Filter1To9")}
-                            isActive={filter === "Filter1To9"}
-                        />
-                        <Button
-                            src={Filter9To1}
-                            type={"Tamanho"}
-                            setFunction={changeFilter("Filter9To1")}
-                            isActive={filter === "Filter9To1"}
-                        />
+                        {filterButtonsInfo.map(buttonInfo => {
+                            const { src, type, filterType } = buttonInfo;
+                            return (
+                                <Button
+                                    key={filterType}
+                                    src={src}
+                                    type={type}
+                                    setFunction={changeFilter(filterType)}
+                                    isActive={filter === filterType}
+                                />
+                            );
+                        })}
                     </S.Buttons>
                 </S.Left>
             </S.ExtraLeft>

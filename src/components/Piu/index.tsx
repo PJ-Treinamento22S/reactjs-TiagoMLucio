@@ -47,11 +47,11 @@ function getCreatedTime(time: Date) {
 }
 
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
-    const { myUser, setMyUser, favorites } = useAuth();
+    const { myUsername, myUser, setMyUser, favorites, search } = useAuth();
 
     const handleLike = async () => {
         await api.post("/pius/like", { piu_id: id });
-        const myUserNew = await api.get("/users?username=BafetimbiGomis");
+        const myUserNew = await api.get("/users?username=" + myUsername);
         setMyUser(myUserNew.data[0]);
     };
 
@@ -59,7 +59,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         if (myUser?.favorites.find(piu => piu.id === id))
             await api.post("/pius/unfavorite", { piu_id: id });
         else await api.post("/pius/favorite", { piu_id: id });
-        const myUserNew = await api.get("/users?username=BafetimbiGomis");
+        const myUserNew = await api.get("/users?username=" + myUsername);
         setMyUser(myUserNew.data[0]);
     };
 
@@ -68,7 +68,15 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         : false;
 
     return (
-        <S.Wrapper isFavorite={isFavorite} favorites={favorites}>
+        <S.Wrapper
+            isFavorite={isFavorite}
+            favorites={favorites}
+            search={
+                user.username.toLowerCase().includes(search) ||
+                user.first_name.toLowerCase().includes(search) ||
+                user.last_name.toLowerCase().includes(search)
+            }
+        >
             <S.User>
                 <S.Avatar
                     src={user.photo}
@@ -88,7 +96,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                     <S.LikeData>
                         <S.ReactionIcon
                             src={
-                                myUser?.likes.find(piu => piu.id === id)
+                                likes.find(piuLike => piuLike.user.id === myUser?.id)
                                     ? RedLike
                                     : Like
                             }
