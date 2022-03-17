@@ -121,6 +121,12 @@ export const Post = styled.button`
     line-height: 33px;
 `;
 
+export const PickerWrapper = styled.div`
+    margin-bottom: 16px;
+    box-shadow: var(--light);
+    background: var(--primary-light);
+`;
+
 interface WarningProps {
     display: boolean;
 }

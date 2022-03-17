@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Picker, { IEmojiData } from "emoji-picker-react";
+
 import * as S from "./styles";
 import Divisor from "../../assets/Divisor.svg";
 import Img from "../../assets/Img.svg";
@@ -12,6 +14,20 @@ const CreatePiu: React.FC = () => {
 
     const [displayWarning, setDisplayWarning] = useState(false);
     const [text, setText] = useState("");
+
+    const [chosenEmoji, setChosenEmoji] = useState("");
+    const [pickerVisible, setPickerVisible] = useState(false);
+
+    const onEmojiClick = (
+        event: React.MouseEvent<Element, MouseEvent>,
+        data: IEmojiData
+    ): void => {
+        setChosenEmoji(data.emoji);
+    };
+
+    useEffect(() => {
+        setText(text + chosenEmoji);
+    }, [chosenEmoji]);
 
     const handlePost = async () => {
         if (text.length === 0) setDisplayWarning(true);
@@ -46,13 +62,24 @@ const CreatePiu: React.FC = () => {
                             <S.Icons>
                                 <S.Icon src={Img}></S.Icon>
                                 <S.Icon src={GIF}></S.Icon>
-                                <S.Icon src={Emoji}></S.Icon>
+                                <S.Icon
+                                    src={Emoji}
+                                    onClick={() =>
+                                        setPickerVisible(!pickerVisible)
+                                    }
+                                />
                             </S.Icons>
                             <S.Post onClick={handlePost}>Postar</S.Post>
                         </S.WrapperBottom>
                     </S.TextInfo>
                 </S.TextBox>
             </S.Container>
+            <S.PickerWrapper hidden={!pickerVisible}>
+                <Picker
+                    onEmojiClick={onEmojiClick}
+                    pickerStyle={{ height: "280px", width: "344px" }}
+                />
+            </S.PickerWrapper>
             <S.Warning display={displayWarning}>{`Não é possível enviar Pius ${
                 text.length === 0 ? "vazios" : "com mais de 140 caracteres"
             }`}</S.Warning>
