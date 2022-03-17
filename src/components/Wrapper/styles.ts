@@ -43,6 +43,7 @@ export const Right = styled.div`
     display: inline-block;
     flex-direction: column;
 
+    min-width: 300px;
     padding: 0 24px;
     height: auto;
     margin-top: 8px;

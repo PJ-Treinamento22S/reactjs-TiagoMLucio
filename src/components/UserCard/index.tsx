@@ -5,9 +5,9 @@ import Profile from "../../assets/ProfileDark.svg";
 import { wasSearched } from "../Piu";
 import { useAuth } from "../../hooks/useAuth";
 
-const UserCard: React.FC<UserInterface> = (user) => {
+const UserCard: React.FC<UserInterface> = user => {
     const { id, photo, first_name, last_name, username } = user;
-    const {search} = useAuth();
+    const { search } = useAuth();
     return (
         <S.Container search={wasSearched(user, search)}>
             <S.Avatar src={photo.includes("https") ? photo : Profile} />

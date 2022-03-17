@@ -24,6 +24,8 @@
     align-items: center;
     background: var(--white);
 
+    min-height: 100vw;
+
     font-family: "Nunito";
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
