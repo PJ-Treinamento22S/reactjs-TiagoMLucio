@@ -87,6 +87,22 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         ? true
         : false;
 
+    const newName =
+        user.first_name && user.last_name
+            ? user.first_name + " " + user.last_name
+            : "User " + id.slice(0, 5);
+    const newUserName = user.username || "user_" + user.id.slice(0, 5);
+
+    function openWhatsApp() {
+        window.open(
+            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName} (@${newUserName})%0a%0a${text}`
+        );
+    }
+
+    function openEmail() {
+        window.open(`mailto:${user.email}?subject=PiuPiuwer Reply`);
+    }
+
     return (
         <S.Wrapper
             isFavorite={isFavorite}
@@ -101,9 +117,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                         (e.target as any).src = Profile;
                     }}
                 />
-                <S.Username>
-                    @{user.username || "user_" + user.id.slice(0, 5)}
-                </S.Username>
+                <S.Username>@{newUserName}</S.Username>
             </S.User>
             <S.PiuBox>
                 <S.PiuText>{text}</S.PiuText>
@@ -139,13 +153,17 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                         src={isFavorite ? RedBookmark : Bookmark}
                         onClick={handleFavorite}
                     />
-                    <S.ReactionIcon src={Msg} hidden={myUser?.id === user.id} />
+                    <S.ReactionIcon
+                        src={Msg}
+                        onClick={openEmail}
+                        hidden={myUser?.id === user.id}
+                    />
                     <S.ReactionIcon
                         src={Trash}
                         onClick={handleDelete}
                         hidden={myUser?.id !== user.id}
                     />
-                    <S.ReactionIcon src={Share} />
+                    <S.ReactionIcon src={Share} onClick={openWhatsApp} />
                 </S.Reactions>
             </S.PiuBox>
         </S.Wrapper>
