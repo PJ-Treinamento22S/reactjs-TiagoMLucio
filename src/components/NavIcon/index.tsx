@@ -2,8 +2,6 @@ import React from "react";
 import * as S from "./styles";
 import Line from "../../assets/IconLine.svg";
 
-// import { Container } from './styles';
-
 interface NavIconProps {
     src: string;
     visible: boolean;

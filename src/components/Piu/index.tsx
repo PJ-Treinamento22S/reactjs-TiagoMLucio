@@ -97,7 +97,10 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
 
     function openWhatsApp() {
         window.open(
-            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName} (@${newUserName})%0a%0a${text}`
+            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName} (@${newUserName})%0a%0a${text.replaceAll(
+                "\n",
+                "%0a"
+            )}`
         );
     }
 

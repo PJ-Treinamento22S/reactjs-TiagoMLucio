@@ -74,6 +74,7 @@ export const PiuText = styled.p`
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
+    white-space: pre-line;
     overflow-wrap: break-word;
     width: 360px;
     margin: 8px 0 16px 0;

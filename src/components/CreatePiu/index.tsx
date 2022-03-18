@@ -10,7 +10,7 @@ import api from "../../config/api";
 import { useAuth } from "../../hooks/useAuth";
 
 const CreatePiu: React.FC = () => {
-    const { reload, setReload } = useAuth();
+    const { setReload } = useAuth();
 
     const [displayWarning, setDisplayWarning] = useState(false);
     const [text, setText] = useState("");
@@ -37,7 +37,6 @@ const CreatePiu: React.FC = () => {
             await api.post("/pius", { text });
             setText("");
             setReload(true);
-            console.log(reload);
         }
     };
     return (
