@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 import * as S from "./styles";
@@ -64,10 +64,20 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
     const { myUsername, myUser, setMyUser, favorites, search, setReload } =
         useAuth();
 
+    const [liked, setLiked] = useState(
+        likes.find(piuLike => piuLike.user.username === myUsername) ? 1 : 0
+    );
+
+    console.log(
+        likes,
+        text,
+        liked,
+        likes.find(piuLike => piuLike.user.username === myUsername) ? 1 : 0
+    );
+
     const handleLike = async () => {
-        await api.post("/pius/like", { piu_id: id });
-        const myUserNew = await api.get("/users?username=" + myUsername);
-        setMyUser(myUserNew.data[0]);
+        console.log(await api.post("/pius/like", { piu_id: id }));
+        setLiked((liked + 1) % 2);
     };
 
     const handleFavorite = async () => {
@@ -125,28 +135,17 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                 <S.Reactions>
                     <S.LikeData>
                         <S.ReactionIcon
-                            src={
-                                likes.find(
-                                    piuLike => piuLike.user.id === myUser?.id
-                                )
-                                    ? RedLike
-                                    : Like
-                            }
+                            src={liked ? RedLike : Like}
                             onClick={handleLike}
                         />
                         <S.Amount>
-                            {
-                                // likes.length -
-                                //     (likes.find(
-                                //         piuLike => piuLike.user.id === myUser?.id
-                                //     )
-                                //         ? 1
-                                //         : 0) +
-                                //     (myUser?.likes.find(piuLike => piuLike.piu.id === id)
-                                //         ? 1
-                                //         : 0)
-                                0
-                            }
+                            {likes.length -
+                                (likes.find(
+                                    piuLike => piuLike.user.id === myUser?.id
+                                )
+                                    ? 1
+                                    : 0) +
+                                (liked ? 1 : 0)}
                         </S.Amount>
                     </S.LikeData>
                     <S.ReactionIcon

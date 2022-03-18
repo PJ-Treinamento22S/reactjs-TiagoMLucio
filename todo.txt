@@ -1,0 +1,6 @@
+- quebras de linha no piu
+- likes (users.likes.piu)
+- delete api
+- "nenhum usuário encontrado"
+- responsividade
+
