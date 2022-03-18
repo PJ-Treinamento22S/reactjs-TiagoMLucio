@@ -105,10 +105,9 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
     //Função Share que abre o whats app com a mensagem a ser compartilhada (incluindo o seu autor)
     function openWhatsApp() {
         window.open(
-            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName(user)} (@${newUserName(user)})%0a%0a${text.replaceAll(
-                "\n",
-                "%0a"
-            )}`
+            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName(
+                user
+            )} (@${newUserName(user)})%0a%0a${text.replaceAll("\n", "%0a")}`
         );
     }
 
