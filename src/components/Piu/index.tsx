@@ -85,7 +85,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
     };
 
     const handleDelete = async () => {
-        console.log(await api.delete("/pius", {}));
+        await api.delete("/pius", { data: { piu_id: id } });
         setReload(true);
     };
 

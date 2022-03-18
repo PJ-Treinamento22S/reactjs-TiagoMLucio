@@ -1,7 +1,7 @@
 ✅ quebras de linha no piu
 ✅ reload after creating a piu
 ✅ likes (users.likes.piu) 
--  delete api
--  "nenhum usuário encontrado"
+✅  delete api
+-  "nenhum usuário encontrado" 
 -  responsividade
 ✅ favorites interaction speed
