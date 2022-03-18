@@ -1,6 +1,8 @@
 - quebras de linha no piu
-- likes (users.likes.piu)
+X likes (users.likes.piu) 
 - delete api
 - "nenhum usuário encontrado"
 - responsividade
+- favorites faster
+- reload after creating a piu
 

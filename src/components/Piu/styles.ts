@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface WrapperProps {
-    isFavorite: boolean;
+    favorited: boolean;
     favorites: boolean;
     search: boolean;
 }
@@ -9,7 +9,7 @@ interface WrapperProps {
 export const Wrapper = styled.div<WrapperProps>`
     display: ${props =>
         props.search
-            ? props.isFavorite
+            ? props.favorited
                 ? "block"
                 : props.favorites
                 ? "none"

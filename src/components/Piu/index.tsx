@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 import * as S from "./styles";
@@ -61,41 +61,33 @@ export const wasSearched = (user: UserInterface, search: string) =>
         .includes(search);
 
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
-    const { myUsername, myUser, setMyUser, favorites, search, setReload } =
-        useAuth();
+    const { myUsername, myUser, favorites, search, setReload } = useAuth();
 
     const [liked, setLiked] = useState(
         likes.find(piuLike => piuLike.user.username === myUsername) ? 1 : 0
     );
 
-    console.log(
-        likes,
-        text,
-        liked,
-        likes.find(piuLike => piuLike.user.username === myUsername) ? 1 : 0
-    );
+    const [favorited, setFavorited] = useState(false);
+
+    useEffect(() => {
+        setFavorited(Boolean(myUser?.favorites.find(piu => piu.id === id)));
+    }, [myUser]);
 
     const handleLike = async () => {
-        console.log(await api.post("/pius/like", { piu_id: id }));
+        await api.post("/pius/like", { piu_id: id });
         setLiked((liked + 1) % 2);
     };
 
     const handleFavorite = async () => {
-        if (myUser?.favorites.find(piu => piu.id === id))
-            await api.post("/pius/unfavorite", { piu_id: id });
+        if (favorited) await api.post("/pius/unfavorite", { piu_id: id });
         else await api.post("/pius/favorite", { piu_id: id });
-        const myUserNew = await api.get("/users?username=" + myUsername);
-        setMyUser(myUserNew.data[0]);
+        setFavorited(!favorited);
     };
 
     const handleDelete = async () => {
-        await api.delete("/pius");
+        console.log(await api.delete("/pius", {}));
         setReload(true);
     };
-
-    const isFavorite: boolean = myUser?.favorites.find(piu => piu.id === id)
-        ? true
-        : false;
 
     const newName =
         user.first_name && user.last_name
@@ -115,7 +107,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
 
     return (
         <S.Wrapper
-            isFavorite={isFavorite}
+            favorited={favorited}
             favorites={favorites}
             search={wasSearched(user, search)}
         >
@@ -149,7 +141,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                         </S.Amount>
                     </S.LikeData>
                     <S.ReactionIcon
-                        src={isFavorite ? RedBookmark : Bookmark}
+                        src={favorited ? RedBookmark : Bookmark}
                         onClick={handleFavorite}
                     />
                     <S.ReactionIcon
