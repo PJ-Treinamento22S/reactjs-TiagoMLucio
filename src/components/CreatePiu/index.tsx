@@ -18,6 +18,7 @@ const CreatePiu: React.FC = () => {
     const [chosenEmoji, setChosenEmoji] = useState("");
     const [pickerVisible, setPickerVisible] = useState(false);
 
+    //Display EmojiPicker
     const onEmojiClick = (
         event: React.MouseEvent<Element, MouseEvent>,
         data: IEmojiData
@@ -25,6 +26,7 @@ const CreatePiu: React.FC = () => {
         setChosenEmoji(data.emoji);
     };
 
+    //Addicionar o Emoji na TextArea
     useEffect(() => {
         setText(text + chosenEmoji);
     }, [chosenEmoji]);

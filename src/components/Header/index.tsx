@@ -11,6 +11,7 @@ interface HeaderProps {
     page: string;
 }
 
+//Display do Header baseado na página dada como entrada
 const Header: React.FC<HeaderProps> = ({ page }) => {
     const { setSearch } = useAuth();
     return (

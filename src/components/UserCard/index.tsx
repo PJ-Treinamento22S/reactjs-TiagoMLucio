@@ -4,23 +4,18 @@ import UserInterface from "../../interfaces/User";
 import Profile from "../../assets/ProfileDark.svg";
 import { wasSearched } from "../Piu";
 import { useAuth } from "../../hooks/useAuth";
+import { newName, newUserName } from "../Piu";
 
 const UserCard: React.FC<UserInterface> = user => {
-    const { id, photo, first_name, last_name, username } = user;
+    const { photo } = user;
     const { search } = useAuth();
-
-    const newName =
-        first_name && last_name
-            ? first_name + " " + last_name
-            : "User " + id.slice(0, 5);
-    const newUserName = username || "user_" + id.slice(0, 5);
 
     return (
         <S.Container search={wasSearched(user, search)}>
             <S.Avatar src={photo.includes("https") ? photo : Profile} />
             <S.NameAndUser>
-                <S.Name>{newName}</S.Name>
-                <S.Username>@{newUserName}</S.Username>
+                <S.Name>{newName(user)}</S.Name>
+                <S.Username>@{newUserName(user)}</S.Username>
             </S.NameAndUser>
             <S.Follow>Follow</S.Follow>
         </S.Container>

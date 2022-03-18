@@ -14,6 +14,7 @@ import Trash from "../../assets/Trash.svg";
 import Share from "../../assets/Share.svg";
 import api from "../../config/api";
 
+//Retorna quanto tempo atrás o piu foi criado (baseado na Date dada como entrada)
 function getCreatedTime(time: Date) {
     const diff = new Date().getTime() - new Date(time).getTime();
     const seconds = Math.floor(diff / 1000);
@@ -49,6 +50,7 @@ function getCreatedTime(time: Date) {
     } ago`;
 }
 
+//Retorna um booleano que indica se o usuário está sendo pesquisado no momento ou não
 export const wasSearched = (user: UserInterface, search: string) =>
     (user.username || "user_" + user.id.slice(0, 5))
         .toLowerCase()
@@ -60,13 +62,24 @@ export const wasSearched = (user: UserInterface, search: string) =>
         .toLowerCase()
         .includes(search);
 
+//Error Handling para usuários sem nome ou username
+export const newName = ({ first_name, last_name, id }: UserInterface) =>
+    first_name && last_name
+        ? first_name + " " + last_name
+        : "User " + id.slice(0, 5);
+
+export const newUserName = ({ username, id }: UserInterface) =>
+    username || "user_" + id.slice(0, 5);
+
 const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
     const { myUsername, myUser, favorites, search, setReload } = useAuth();
 
+    //booleano que indica se o myUser deu like nesse piu
     const [liked, setLiked] = useState(
         likes.find(piuLike => piuLike.user.username === myUsername) ? 1 : 0
     );
 
+    //booleano que indica se o myUser favoritou esse piu
     const [favorited, setFavorited] = useState(false);
 
     useEffect(() => {
@@ -89,21 +102,17 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
         setReload(true);
     };
 
-    const newName =
-        user.first_name && user.last_name
-            ? user.first_name + " " + user.last_name
-            : "User " + id.slice(0, 5);
-    const newUserName = user.username || "user_" + user.id.slice(0, 5);
-
+    //Função Share que abre o whats app com a mensagem a ser compartilhada (incluindo o seu autor)
     function openWhatsApp() {
         window.open(
-            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName} (@${newUserName})%0a%0a${text.replaceAll(
+            `whatsapp://send?text=Fowarded Message - PiuPiuwer%0aFrom: ${newName(user)} (@${newUserName(user)})%0a%0a${text.replaceAll(
                 "\n",
                 "%0a"
             )}`
         );
     }
 
+    //Função Msg que abre o email com o draft para o usúario desejado
     function openEmail() {
         window.open(`mailto:${user.email}?subject=PiuPiuwer Reply`);
     }
@@ -122,7 +131,7 @@ const Piu: React.FC<PiuInterface> = ({ id, user, likes, text, created_at }) => {
                         (e.target as any).src = Profile;
                     }}
                 />
-                <S.Username>@{newUserName}</S.Username>
+                <S.Username>@{newUserName(user)}</S.Username>
             </S.User>
             <S.PiuBox>
                 <S.PiuText>{text}</S.PiuText>

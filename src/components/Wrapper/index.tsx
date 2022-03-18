@@ -56,6 +56,7 @@ const Wrapper: React.FC = () => {
         },
     ];
 
+    //Pegar os usuários e pius da api
     useEffect(() => {
         async function getData() {
             const responsePius = await api.get("/pius");
@@ -67,6 +68,7 @@ const Wrapper: React.FC = () => {
         return setReload(false);
     }, [reload]);
 
+    //Encontrar o usuário que estou logado
     useEffect(() => {
         setMyUser(
             () =>
@@ -81,6 +83,7 @@ const Wrapper: React.FC = () => {
         setFilter(filter);
     }, []);
 
+    //Filtrar os pius baseado no filtro escolhido
     useEffect(() => {
         setPiusFiltered(
             [...pius].sort((a, b) => {
