@@ -6,4 +6,4 @@
  - responsividade
 ✅ favorites interaction speed
 ✅ comentários
- - newName e newUsername functions
+✅ newName e newUsername functions

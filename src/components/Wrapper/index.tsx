@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button/index";
 import CreatePiu from "../CreatePiu";
 import Piu from "../Piu";
@@ -55,6 +55,12 @@ const Wrapper: React.FC = () => {
             filterType: "Filter9To1",
         },
     ];
+
+    const [userListRight, setUserListRight] = useState(true);
+
+    useEffect(() => {
+        setUserListRight(window.innerWidth >= 1260);
+    }, []);
 
     //Pegar os usuários e pius da api
     useEffect(() => {
@@ -147,6 +153,14 @@ const Wrapper: React.FC = () => {
                         })}
                     </S.Buttons>
                 </S.Left>
+                <S.Right activated={!userListRight}>
+                    <S.SectionTitle>Usuários</S.SectionTitle>
+                    <S.UserList>
+                        {users.map(user => (
+                            <UserCard key={user.id} {...user} />
+                        ))}
+                    </S.UserList>
+                </S.Right>
             </S.ExtraLeft>
             <S.Middle>
                 <CreatePiu />
@@ -157,7 +171,7 @@ const Wrapper: React.FC = () => {
                     ))}
                 </S.Pius>
             </S.Middle>
-            <S.Right>
+            <S.Right activated={userListRight}>
                 <S.SectionTitle>Usuários</S.SectionTitle>
                 <S.UserList>
                     {users.map(user => (

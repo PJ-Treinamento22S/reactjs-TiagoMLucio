@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface UserListProps {
+    activated: boolean;
+}
+
 export const Content = styled.div`
     display: flex;
     justify-content: space-between;
@@ -7,7 +11,7 @@ export const Content = styled.div`
 `;
 
 export const ExtraLeft = styled.div`
-    display: flex;
+    display: "flex";
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
@@ -39,8 +43,8 @@ export const Middle = styled.div`
     background: var(--primaryLight);
 `;
 
-export const Right = styled.div`
-    display: inline-block;
+export const Right = styled.div<UserListProps>`
+    display: ${props => (props.activated ? "inline-block" : "none")};
     flex-direction: column;
 
     min-width: 300px;
@@ -52,6 +56,7 @@ export const Right = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
+    display: "flex";
     margin: 4px 0 0 16px;
     font-weight: 800;
     font-size: 20px;
@@ -88,7 +93,7 @@ export const Pius = styled.div`
 // Right
 
 export const UserList = styled.ul`
-    display: flex;
+    display: "flex";
     flex-direction: column;
     align-items: center;
     justify-content: space-between;

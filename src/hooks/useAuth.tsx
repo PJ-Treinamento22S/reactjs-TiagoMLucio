@@ -26,7 +26,7 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const AuthProvider: React.FC = ({ children }) => {
-    const myUsername = "BafetimbiGomis";
+    const myUsername = "xX_felipinho_Xx";
 
     const [pius, setPius] = useState<PiuInterface[]>([] as PiuInterface[]);
     const [piusFiltered, setPiusFiltered] = useState<PiuInterface[]>(

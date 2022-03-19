@@ -16,7 +16,7 @@ export const Container = styled.li<ContainerProps>`
 
     border-radius: 16px;
     padding: 4px 16px 4px 16px;
-    margin: 6px 0;
+    margin: 8px 0;
     background: var(--primaryDark);
 
     box-shadow: var(--light);
