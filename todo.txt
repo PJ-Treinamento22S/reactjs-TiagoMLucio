@@ -1,9 +1,0 @@
-✅ quebras de linha no piu
-✅ reload after creating a piu
-✅ likes (users.likes.piu) 
-✅  delete api
- - "nenhum usuário encontrado" 
- - responsividade
-✅ favorites interaction speed
-✅ comentários
-✅ newName e newUsername functions
